@@ -1,5 +1,6 @@
 import React from 'react';
 import { MoreVertical, ArrowUpRight, Users, Clock, Activity, Bot, UserCheck } from 'lucide-react';
+import Avatar from 'react-avatar';
 
 interface Application {
   id: string;
@@ -19,7 +20,7 @@ interface Application {
 const applications: Application[] = [
   {
     id: '1',
-    name: 'RemodlConstruct',
+    name: 'Remodl Construct',
     slug: 'remodl-construct',
     icon_url: 'https://data.remodl.ai/storage/v1/object/public/public/icons/construct.png',
     url: 'https://construct.remodl.ai',
@@ -33,7 +34,7 @@ const applications: Application[] = [
   },
   {
     id: '2',
-    name: 'RemodlLogistics',
+    name: 'Remodl Logistics',
     slug: 'remodl-logistics',
     icon_url: 'https://data.remodl.ai/storage/v1/object/public/public/icons/logistics.png',
     url: 'https://logistics.remodl.ai',
@@ -47,7 +48,7 @@ const applications: Application[] = [
   },
   {
     id: '3',
-    name: 'RemodlPharma',
+    name: 'Remodl Pharma',
     slug: 'remodl-pharma',
     icon_url: 'https://data.remodl.ai/storage/v1/object/public/public/icons/pharma.png',
     url: 'https://pharma.remodl.ai',
@@ -97,9 +98,12 @@ export default function ApplicationList() {
                   {app.icon_url ? (
                     <img src={app.icon_url} alt={app.name} className="w-5 h-5 rounded" />
                   ) : (
-                    <div className="w-5 h-5 rounded bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-[10px] font-medium text-white">
-                      {app.name.split(' ').map(word => word[0]).join('')}
-                    </div>
+                    <Avatar
+                      name={app.name}
+                      size="20"
+                      round={true}
+                      textSizeRatio={2}
+                    />
                   )}
                   {app.name}
                   <button className="text-slate-400 hover:text-white transition-colors">
