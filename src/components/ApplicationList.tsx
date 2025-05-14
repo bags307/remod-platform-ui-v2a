@@ -1,12 +1,15 @@
 import React from 'react';
-import { MoreVertical, ArrowUpRight, Users, Clock, Activity, Bot } from 'lucide-react';
+import { MoreVertical, ArrowUpRight, Users, Clock, Activity, Bot, UserCheck } from 'lucide-react';
 
 interface Application {
   id: string;
   name: string;
   description: string;
+  slug: string;
+  icon_url: string | null;
   status: 'active' | 'maintenance' | 'offline';
-  users: number;
+  total_users: number;
+  count_active_users: number;
   lastDeployed: string;
   load: string;
   agents: number;
@@ -16,9 +19,12 @@ const applications: Application[] = [
   {
     id: '1',
     name: 'RemodlConstruct',
+    slug: 'remodl-construct',
+    icon_url: 'https://data.remodl.ai/storage/v1/object/public/public/icons/construct.png',
     description: 'Construction Project Management & Analysis',
     status: 'active',
-    users: 1256,
+    total_users: 1256,
+    count_active_users: 892,
     lastDeployed: '2h ago',
     load: '82%',
     agents: 12
@@ -26,9 +32,12 @@ const applications: Application[] = [
   {
     id: '2',
     name: 'RemodlLogistics',
+    slug: 'remodl-logistics',
+    icon_url: 'https://data.remodl.ai/storage/v1/object/public/public/icons/logistics.png',
     description: 'Supply Chain Optimization Platform',
     status: 'maintenance',
-    users: 892,
+    total_users: 892,
+    count_active_users: 445,
     lastDeployed: '1d ago',
     load: '45%',
     agents: 8
@@ -36,9 +45,12 @@ const applications: Application[] = [
   {
     id: '3',
     name: 'RemodlPharma',
+    slug: 'remodl-pharma',
+    icon_url: 'https://data.remodl.ai/storage/v1/object/public/public/icons/pharma.png',
     description: 'Pharmaceutical Research Assistant',
     status: 'active',
-    users: 445,
+    total_users: 445,
+    count_active_users: 234,
     lastDeployed: '5h ago',
     load: '67%',
     agents: 15
@@ -78,6 +90,13 @@ export default function ApplicationList() {
             <div className="flex items-center justify-between mb-3">
               <div>
                 <h3 className="text-sm font-medium text-white mb-1 flex items-center gap-2">
+                  {app.icon_url ? (
+                    <img src={app.icon_url} alt={app.name} className="w-5 h-5 rounded" />
+                  ) : (
+                    <div className="w-5 h-5 rounded bg-slate-700/50 flex items-center justify-center">
+                      <Bot size={12} className="text-slate-400" />
+                    </div>
+                  )}
                   {app.name}
                   <button className="text-slate-400 hover:text-white transition-colors">
                     <ArrowUpRight size={14} />
@@ -104,7 +123,11 @@ export default function ApplicationList() {
             <div className="grid grid-cols-4 gap-4">
               <div className="flex items-center gap-2 text-slate-400">
                 <Users size={14} />
-                <span className="text-xs">{app.users} users</span>
+                <span className="text-xs">{app.total_users} total users</span>
+              </div>
+              <div className="flex items-center gap-2 text-slate-400">
+                <UserCheck size={14} />
+                <span className="text-xs">{app.count_active_users} active</span>
               </div>
               <div className="flex items-center gap-2 text-slate-400">
                 <Clock size={14} />
@@ -113,10 +136,6 @@ export default function ApplicationList() {
               <div className="flex items-center gap-2 text-slate-400">
                 <Activity size={14} />
                 <span className="text-xs">Load: {app.load}</span>
-              </div>
-              <div className="flex items-center gap-2 text-slate-400">
-                <Bot size={14} />
-                <span className="text-xs">{app.agents} agents</span>
               </div>
             </div>
           </div>
