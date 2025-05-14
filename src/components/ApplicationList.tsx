@@ -4,40 +4,44 @@ import { MoreVertical, ArrowUpRight, Users, Clock, Activity } from 'lucide-react
 interface Application {
   id: string;
   name: string;
-  organization: string;
+  description: string;
   status: 'active' | 'maintenance' | 'offline';
   users: number;
   lastDeployed: string;
   load: string;
+  agents: number;
 }
 
 const applications: Application[] = [
   {
     id: '1',
-    name: 'Customer Support Bot',
-    organization: 'TechCorp Inc.',
+    name: 'RemodlConstruct',
+    description: 'Construction Project Management & Analysis',
     status: 'active',
-    users: 234,
+    users: 1256,
     lastDeployed: '2h ago',
-    load: '82%'
+    load: '82%',
+    agents: 12
   },
   {
     id: '2',
-    name: 'Data Analysis Agent',
-    organization: 'Analytics Pro',
+    name: 'RemodlLogistics',
+    description: 'Supply Chain Optimization Platform',
     status: 'maintenance',
-    users: 156,
+    users: 892,
     lastDeployed: '1d ago',
-    load: '45%'
+    load: '45%',
+    agents: 8
   },
   {
     id: '3',
-    name: 'Document Processor',
-    organization: 'DocuTech',
+    name: 'RemodlPharma',
+    description: 'Pharmaceutical Research Assistant',
     status: 'active',
-    users: 89,
+    users: 445,
     lastDeployed: '5h ago',
-    load: '67%'
+    load: '67%',
+    agents: 15
   }
 ];
 
@@ -79,7 +83,7 @@ export default function ApplicationList() {
                     <ArrowUpRight size={14} />
                   </button>
                 </h3>
-                <p className="text-xs text-slate-400">{app.organization}</p>
+                <p className="text-xs text-slate-400">{app.description}</p>
               </div>
               <div className="flex items-center gap-2">
                 <span className={`text-xs px-2 py-0.5 rounded-full ${
@@ -97,7 +101,7 @@ export default function ApplicationList() {
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-4 gap-4">
               <div className="flex items-center gap-2 text-slate-400">
                 <Users size={14} />
                 <span className="text-xs">{app.users} users</span>
@@ -109,6 +113,10 @@ export default function ApplicationList() {
               <div className="flex items-center gap-2 text-slate-400">
                 <Activity size={14} />
                 <span className="text-xs">Load: {app.load}</span>
+              </div>
+              <div className="flex items-center gap-2 text-slate-400">
+                <Bot size={14} />
+                <span className="text-xs">{app.agents} agents</span>
               </div>
             </div>
           </div>
