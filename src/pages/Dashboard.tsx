@@ -2,11 +2,12 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { 
-  LayoutDashboard, Bot, Database, Settings, Users, 
-  BarChart3, LogOut, Menu, Bell, Search, Plus,
+  LayoutDashboard, Bot, Database, Settings, Users,
+  BarChart3, LogOut, Menu, Search, Plus,
   Building2, Boxes, Activity, Shield, Server, ArrowUpRight
 } from 'lucide-react';
 import ApplicationList from '../components/ApplicationList';
+import UserHeader from '../components/UserHeader';
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -88,25 +89,7 @@ export default function Dashboard() {
               />
             </div>
           </div>
-
-          <div className="flex items-center gap-4">
-            <button className="h-8 w-8 flex items-center justify-center rounded-lg hover:bg-slate-800 relative">
-              <Bell size={18} className="text-slate-400" />
-              <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-blue-500" />
-            </button>
-            <div className="h-8 w-[1px] bg-slate-700/50" />
-            <div className="flex items-center gap-3">
-              <div className="text-right">
-                <p className="text-sm font-medium text-slate-200">Sarah Anderson</p>
-                <p className="text-xs text-slate-400">sarah@remodl.ai</p>
-              </div>
-              <img 
-                src="https://images.pexels.com/photos/7562313/pexels-photo-7562313.jpeg?auto=compress&cs=tinysrgb&w=32&h=32&dpr=2"
-                alt="Profile"
-                className="h-8 w-8 rounded-full object-cover ring-2 ring-slate-700/50"
-              />
-            </div>
-          </div>
+          <UserHeader />
         </header>
 
         {/* Main Content Area */}
