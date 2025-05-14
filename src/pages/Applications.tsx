@@ -1,14 +1,84 @@
 import React from 'react';
-import { Plus, Search, Filter, ArrowDownToLine, Grid2X2, List, Bot, Users, Activity, Server, Database, Code, Zap, Shield } from 'lucide-react';
+import { Plus, Search, Filter, ArrowDownToLine, Grid2X2, List, Bot, Users, Activity, Server, Database, Code, Zap, Shield, LayoutDashboard, Building2, Settings, BarChart3, LogOut } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { supabase } from '../lib/supabase';
 import ApplicationList from '../components/ApplicationList';
 import UserHeader from '../components/UserHeader';
 
 export default function Applications() {
+  const navigate = useNavigate();
   const [viewMode, setViewMode] = React.useState<'grid' | 'list'>('list');
   const [selectedPeriod, setSelectedPeriod] = React.useState<'24h' | '7d' | '30d'>('7d');
   
+  const handleSignOut = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error('Error signing out:', error.message);
+      return;
+    }
+    navigate('/');
+  };
+
   return (
-    <div className="flex-1 flex flex-col min-h-screen bg-slate-900">
+    <div className="min-h-screen bg-slate-900 flex">
+      {/* Sidebar */}
+      <div className="w-64 border-r border-slate-700/50 bg-slate-900/95 backdrop-blur-sm">
+        <div className="h-16 px-4 border-b border-slate-700/50 flex items-center">
+          <img 
+            src="https://data.remodl.ai/storage/v1/object/public/public//remodl-white.png" 
+            alt="Remodl AI" 
+            className="h-8"
+          />
+        </div>
+        
+        <nav className="p-4 space-y-1">
+          <button 
+            onClick={() => navigate('/')}
+            className="flex items-center gap-2 w-full px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 rounded-lg"
+          >
+            <LayoutDashboard size={16} />
+            Dashboard
+          </button>
+          <button 
+            className="flex items-center gap-2 w-full px-3 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg"
+          >
+            <Building2 size={16} />
+            Applications
+          </button>
+          <button 
+            onClick={() => navigate('/studio')}
+            className="flex items-center gap-2 w-full px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 rounded-lg"
+          >
+            <Bot size={16} />
+            Agent Studio
+          </button>
+          <button className="flex items-center gap-2 w-full px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 rounded-lg">
+            <Users size={16} />
+            Team
+          </button>
+          <button className="flex items-center gap-2 w-full px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 rounded-lg">
+            <BarChart3 size={16} />
+            Analytics
+          </button>
+          <button className="flex items-center gap-2 w-full px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 rounded-lg">
+            <Settings size={16} />
+            Settings
+          </button>
+        </nav>
+
+        <div className="absolute bottom-4 left-4 right-4">
+          <button 
+            onClick={handleSignOut}
+            className="flex items-center gap-2 w-full px-3 py-2 text-sm font-medium text-red-400 hover:bg-red-500/10 rounded-lg"
+          >
+            <LogOut size={16} />
+            Sign Out
+          </button>
+        </div>
+      </div>
+
+      <div className="flex-1 flex flex-col">
       {/* Header */}
       <header className="h-16 border-b border-slate-700/50 bg-slate-900/95 backdrop-blur-sm flex items-center justify-between px-6">
         <div className="flex items-center gap-4">
@@ -176,6 +246,7 @@ export default function Applications() {
           <ApplicationList />
         </div>
       </main>
+      </div>
     </div>
   );
 }
