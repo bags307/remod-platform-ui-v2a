@@ -5,6 +5,7 @@ interface Application {
   id: string;
   name: string;
   description: string;
+  url: string;
   slug: string;
   icon_url: string | null;
   status: 'active' | 'maintenance' | 'offline';
@@ -21,6 +22,7 @@ const applications: Application[] = [
     name: 'RemodlConstruct',
     slug: 'remodl-construct',
     icon_url: 'https://data.remodl.ai/storage/v1/object/public/public/icons/construct.png',
+    url: 'https://construct.remodl.ai',
     description: 'Construction Project Management & Analysis',
     status: 'active',
     total_users: 1256,
@@ -34,6 +36,7 @@ const applications: Application[] = [
     name: 'RemodlLogistics',
     slug: 'remodl-logistics',
     icon_url: 'https://data.remodl.ai/storage/v1/object/public/public/icons/logistics.png',
+    url: 'https://logistics.remodl.ai',
     description: 'Supply Chain Optimization Platform',
     status: 'maintenance',
     total_users: 892,
@@ -47,6 +50,7 @@ const applications: Application[] = [
     name: 'RemodlPharma',
     slug: 'remodl-pharma',
     icon_url: 'https://data.remodl.ai/storage/v1/object/public/public/icons/pharma.png',
+    url: 'https://pharma.remodl.ai',
     description: 'Pharmaceutical Research Assistant',
     status: 'active',
     total_users: 445,
@@ -93,8 +97,8 @@ export default function ApplicationList() {
                   {app.icon_url ? (
                     <img src={app.icon_url} alt={app.name} className="w-5 h-5 rounded" />
                   ) : (
-                    <div className="w-5 h-5 rounded bg-slate-700/50 flex items-center justify-center">
-                      <Bot size={12} className="text-slate-400" />
+                    <div className="w-5 h-5 rounded bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-[10px] font-medium text-white">
+                      {app.name.split(' ').map(word => word[0]).join('')}
                     </div>
                   )}
                   {app.name}
@@ -102,7 +106,8 @@ export default function ApplicationList() {
                     <ArrowUpRight size={14} />
                   </button>
                 </h3>
-                <p className="text-xs text-slate-400">{app.description}</p>
+                <p className="text-xs text-slate-400 mb-1">{app.description}</p>
+                <p className="text-xs text-slate-500">{app.url}</p>
               </div>
               <div className="flex items-center gap-2">
                 <span className={`text-xs px-2 py-0.5 rounded-full ${
