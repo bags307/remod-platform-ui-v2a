@@ -1,6 +1,8 @@
 import React from 'react';
+import { useEffect, useState } from 'react';
 import { MoreVertical, ArrowUpRight, Users, Clock, Activity, Bot, UserCheck } from 'lucide-react';
 import Avatar from 'react-avatar';
+import { supabase } from '../lib/supabase';
 
 interface Application {
   id: string;
@@ -12,57 +14,37 @@ interface Application {
   status: 'active' | 'maintenance' | 'offline';
   total_users: number;
   count_active_users: number;
-  lastDeployed: string;
-  load: string;
-  agents: number;
+  created_at: string;
+  updated_at: string;
+  version: string;
+  type: string;
 }
 
-const applications: Application[] = [
-  {
-    id: '1',
-    name: 'Remodl Construct',
-    slug: 'remodl-construct',
-    icon_url: 'https://data.remodl.ai/storage/v1/object/public/public/icons/construct.png',
-    url: 'https://construct.remodl.ai',
-    description: 'Construction Project Management & Analysis',
-    status: 'active',
-    total_users: 1256,
-    count_active_users: 892,
-    lastDeployed: '2h ago',
-    load: '82%',
-    agents: 12
-  },
-  {
-    id: '2',
-    name: 'Remodl Logistics',
-    slug: 'remodl-logistics',
-    icon_url: 'https://data.remodl.ai/storage/v1/object/public/public/icons/logistics.png',
-    url: 'https://logistics.remodl.ai',
-    description: 'Supply Chain Optimization Platform',
-    status: 'maintenance',
-    total_users: 892,
-    count_active_users: 445,
-    lastDeployed: '1d ago',
-    load: '45%',
-    agents: 8
-  },
-  {
-    id: '3',
-    name: 'Remodl Pharma',
-    slug: 'remodl-pharma',
-    icon_url: 'https://data.remodl.ai/storage/v1/object/public/public/icons/pharma.png',
-    url: 'https://pharma.remodl.ai',
-    description: 'Pharmaceutical Research Assistant',
-    status: 'active',
-    total_users: 445,
-    count_active_users: 234,
-    lastDeployed: '5h ago',
-    load: '67%',
-    agents: 15
-  }
-];
-
 export default function ApplicationList() {
+  const [applications, setApplications] = useState<Application[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchApplications = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('applications')
+          .select('*')
+          .order('name');
+
+        if (error) throw error;
+        setApplications(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch applications');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchApplications();
+  }, []);
+
   return (
     <div className="bg-slate-800/50 border border-slate-700/50 rounded-xl">
       <div className="p-6 border-b border-slate-700/50">
@@ -89,8 +71,22 @@ export default function ApplicationList() {
         </div>
       </div>
 
-      <div className="divide-y divide-slate-700/50">
-        {applications.map((app) => (
+      {isLoading ? (
+        <div className="p-8 text-center">
+          <div className="h-8 w-8 border-4 border-blue-600/30 border-t-blue-600 rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-sm text-slate-400">Loading applications...</p>
+        </div>
+      ) : error ? (
+        <div className="p-8 text-center">
+          <p className="text-sm text-red-400">{error}</p>
+        </div>
+      ) : applications.length === 0 ? (
+        <div className="p-8 text-center">
+          <p className="text-sm text-slate-400">No applications found</p>
+        </div>
+      ) : (
+        <div className="divide-y divide-slate-700/50">
+          {applications.map((app) => (
           <div key={app.id} className="p-4 hover:bg-slate-700/20 transition-colors">
             <div className="flex items-center justify-between mb-3">
               <div>
@@ -121,7 +117,7 @@ export default function ApplicationList() {
                     ? 'bg-amber-500/10 text-amber-400'
                     : 'bg-rose-500/10 text-rose-400'
                 }`}>
-                  {app.status.charAt(0).toUpperCase() + app.status.slice(1)}
+                  {app.status ? app.status.charAt(0).toUpperCase() + app.status.slice(1) : 'Unknown'}
                 </span>
                 <button className="h-8 w-8 flex items-center justify-center rounded-lg hover:bg-slate-700/50 text-slate-400 hover:text-white transition-colors">
                   <MoreVertical size={14} />
@@ -132,24 +128,25 @@ export default function ApplicationList() {
             <div className="grid grid-cols-4 gap-4">
               <div className="flex items-center gap-2 text-slate-400">
                 <Users size={14} />
-                <span className="text-xs">{app.total_users} total users</span>
+                <span className="text-xs">{app.total_users.toLocaleString()} total users</span>
               </div>
               <div className="flex items-center gap-2 text-slate-400">
                 <UserCheck size={14} />
-                <span className="text-xs">{app.count_active_users} active</span>
+                <span className="text-xs">{app.count_active_users.toLocaleString()} active</span>
               </div>
               <div className="flex items-center gap-2 text-slate-400">
                 <Clock size={14} />
-                <span className="text-xs">Updated {app.lastDeployed}</span>
+                <span className="text-xs">v{app.version}</span>
               </div>
               <div className="flex items-center gap-2 text-slate-400">
                 <Activity size={14} />
-                <span className="text-xs">Load: {app.load}</span>
+                <span className="text-xs">{app.type}</span>
               </div>
             </div>
           </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
