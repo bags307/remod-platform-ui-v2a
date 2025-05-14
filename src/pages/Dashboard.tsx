@@ -4,8 +4,9 @@ import { supabase } from '../lib/supabase';
 import { 
   LayoutDashboard, Bot, Database, Settings, Users, 
   BarChart3, LogOut, Menu, Bell, Search, Plus,
-  Building2, Boxes, Activity, Shield, Server
+  Building2, Boxes, Activity, Shield, Server, ArrowUpRight
 } from 'lucide-react';
+import ApplicationList from '../components/ApplicationList';
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -154,40 +155,7 @@ export default function Dashboard() {
           
           {/* Management Sections */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-lg font-medium text-white">Recent Applications</h2>
-                <button className="text-sm text-slate-400 hover:text-white transition-colors">View All</button>
-              </div>
-              <div className="space-y-4">
-                {[
-                  { name: 'Customer Support Bot', status: 'Active', users: 234, load: '82%' },
-                  { name: 'Data Analysis Agent', status: 'Maintenance', users: 156, load: '45%' },
-                  { name: 'Document Processor', status: 'Active', users: 89, load: '67%' }
-                ].map((app, i) => (
-                  <div key={i} className="flex items-center justify-between p-4 rounded-lg bg-slate-700/30 border border-slate-700/50">
-                    <div>
-                      <h3 className="text-sm font-medium text-white mb-1">{app.name}</h3>
-                      <span className={`text-xs px-2 py-0.5 rounded-full ${
-                        app.status === 'Active' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-amber-500/10 text-amber-400'
-                      }`}>
-                        {app.status}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-6">
-                      <div className="text-right">
-                        <p className="text-sm text-slate-300">{app.users}</p>
-                        <p className="text-xs text-slate-500">Users</p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-sm text-slate-300">{app.load}</p>
-                        <p className="text-xs text-slate-500">Load</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <ApplicationList />
             
             <div className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-6">
               <div className="flex items-center justify-between mb-6">
