@@ -60,7 +60,7 @@ function App() {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/auth/callback" element={<PKCECallback />} />
-      <Route path="/dashboard" element={
+      <Route path="/" element={
         <ProtectedRoute>
           <Dashboard />
         </ProtectedRoute>
@@ -70,7 +70,7 @@ function App() {
           <Applications />
         </ProtectedRoute>
       } />
-      <Route path="/" element={
+      <Route path="/studio" element={
         <ProtectedRoute>
           <div className="min-h-screen bg-slate-900 text-white flex flex-col">
             <header className="border-b border-slate-700/50 px-6 py-3 flex items-center justify-between backdrop-blur-md bg-slate-900/90 z-10">
