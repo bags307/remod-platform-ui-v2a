@@ -60,12 +60,12 @@ function App() {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/auth/callback" element={<PKCECallback />} />
-      <Route path="/applications/dashboard" element={
+      <Route path="/" element={
         <ProtectedRoute>
           <Dashboard />
         </ProtectedRoute>
       } />
-      <Route path="/" element={
+      <Route path="/applications/dashboard" element={
         <ProtectedRoute>
           <Applications />
         </ProtectedRoute>

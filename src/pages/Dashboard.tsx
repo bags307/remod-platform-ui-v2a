@@ -19,7 +19,7 @@ export default function Dashboard() {
       console.error('Error signing out:', error.message);
       return;
     }
-    navigate('/applications/dashboard');
+    navigate('/');
   };
 
   return (
@@ -40,7 +40,7 @@ export default function Dashboard() {
             Dashboard
           </button>
           <button 
-            onClick={() => navigate('/applications/dashboard')}
+            onClick={() => navigate('/applications/dashboard')} 
             className="flex items-center gap-2 w-full px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 rounded-lg"
           >
             <Building2 size={16} />
