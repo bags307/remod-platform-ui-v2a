@@ -29,4 +29,3 @@ The data structure of the platform is generally as follows:
 
 </PlatformStructureHierarchy>
 
-contin
