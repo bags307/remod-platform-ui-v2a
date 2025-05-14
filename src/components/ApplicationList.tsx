@@ -1,5 +1,5 @@
 import React from 'react';
-import { MoreVertical, ArrowUpRight, Users, Clock, Activity } from 'lucide-react';
+import { MoreVertical, ArrowUpRight, Users, Clock, Activity, Bot } from 'lucide-react';
 
 interface Application {
   id: string;
