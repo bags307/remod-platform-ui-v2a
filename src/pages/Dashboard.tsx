@@ -19,7 +19,7 @@ export default function Dashboard() {
       console.error('Error signing out:', error.message);
       return;
     }
-    navigate('/login');
+    navigate('/applications/dashboard');
   };
 
   return (
