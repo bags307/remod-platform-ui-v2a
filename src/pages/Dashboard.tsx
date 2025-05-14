@@ -39,9 +39,12 @@ export default function Dashboard() {
             <LayoutDashboard size={16} />
             Dashboard
           </button>
-          <button className="flex items-center gap-2 w-full px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 rounded-lg">
+          <button 
+            onClick={() => navigate('/applications')}
+            className="flex items-center gap-2 w-full px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 rounded-lg"
+          >
             <Bot size={16} />
-            Agents
+            Applications
           </button>
           <button className="flex items-center gap-2 w-full px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800 rounded-lg">
             <Database size={16} />

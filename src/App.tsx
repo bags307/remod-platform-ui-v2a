@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import AgentStudio from './components/AgentStudio';
 import Login from './pages/Login';
+import Applications from './pages/Applications';
 import PKCECallback from './pages/PKCECallback';
 import ProtectedRoute from './components/ProtectedRoute';
 import Dashboard from './pages/Dashboard';
@@ -62,6 +63,11 @@ function App() {
       <Route path="/dashboard" element={
         <ProtectedRoute>
           <Dashboard />
+        </ProtectedRoute>
+      } />
+      <Route path="/applications" element={
+        <ProtectedRoute>
+          <Applications />
         </ProtectedRoute>
       } />
       <Route path="/" element={
