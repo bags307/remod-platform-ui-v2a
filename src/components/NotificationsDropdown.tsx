@@ -108,7 +108,7 @@ export default function NotificationsDropdown({ isOpen, onClose }: Notifications
         onClick={onClose}
       />
       <div className="absolute right-0 top-full mt-2 w-96 bg-slate-800 rounded-lg shadow-xl border border-slate-700/50 z-50">
-        <div className="p-4 border-b border-slate-700/50">
+        <div className="px-4 py-3 border-b border-slate-700/50">
           <div className="flex items-center justify-between mb-1">
             <h2 className="text-lg font-medium text-white">Notifications</h2>
             {unreadCount > 0 && (
@@ -120,7 +120,7 @@ export default function NotificationsDropdown({ isOpen, onClose }: Notifications
           <p className="text-sm text-slate-400">Stay updated with platform activities</p>
         </div>
 
-        <div className="divide-y divide-slate-700/50 max-h-[480px] overflow-y-auto">
+        <div className="divide-y divide-slate-700/50">
           {SAMPLE_NOTIFICATIONS.map((notification) => (
             <div 
               key={notification.id}
@@ -159,7 +159,7 @@ export default function NotificationsDropdown({ isOpen, onClose }: Notifications
               {hoveredInfo === notification.id && notification.context && (
                 <div 
                   className="px-4 pb-4 -mt-2 relative before:absolute before:inset-x-4 before:top-0 before:h-4 before:bg-gradient-to-b before:from-slate-800/20 before:to-transparent"
-                  style={{ animation: 'expand-down 400ms cubic-bezier(0.4, 0, 0.2, 1) forwards' }}
+                  style={{ animation: 'expand-down 400ms cubic-bezier(0.4, 0, 0.2, 1) forwards', overflow: 'hidden' }}
                 >
                   <div className="bg-slate-700/30 rounded-lg p-4 shadow-lg relative border border-slate-600/30">
                     <h4 className="text-sm font-medium text-white mb-2">{notification.context.title}</h4>
