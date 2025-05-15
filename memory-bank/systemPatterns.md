@@ -1,5 +1,7 @@
 # System Patterns
 
+Last Updated: March 15, 2025 14:30 UTC
+
 ## Architecture Overview
 1. **Frontend Architecture**
    - React components for UI
@@ -33,9 +35,19 @@
    - Event-driven updates
    - Optimistic UI updates
    - Error boundary implementation
-  - TODO: Investigate and fix notification action buttons alignment with unread indicator
-  - Real-time notification updates
-  - Notification action handlers
+  - Notifications System (Added March 15, 2025):
+    - Real-time updates via WebSocket
+    - Optimistic UI updates for actions
+    - Known Issues:
+      - Action buttons alignment with unread indicator
+        - Current: Left-aligned under content
+        - Expected: Right-aligned under indicator
+        - Investigation needed for flex/grid behavior
+        - Added: March 15, 2025 14:30 UTC
+    - Action Handlers:
+      - Star: Toggle starred status with optimistic update
+      - Save: Toggle saved status with optimistic update
+      - Dismiss: Mark as read with optimistic update
 
 ## Implementation Paths
 1. **Authentication Flow**
@@ -45,7 +57,10 @@
 
 2. **Notification Flow**
   ```
-  WebSocket -> Store Update -> UI Update -> User Action -> API Call -> Store Update
+  WebSocket Connection -> Subscribe to Channel -> 
+  Receive Event -> Store Update -> UI Update -> 
+  User Action -> Optimistic Update -> 
+  API Call -> Store Update -> WebSocket Broadcast
   ```
 
 3. **Agent Configuration**
