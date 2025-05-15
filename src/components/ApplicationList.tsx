@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { MoreVertical, ArrowUpRight, Users, Clock, Activity, Bot, UserCheck } from 'lucide-react';
+import { MoreVertical, Globe, Users, Clock, Activity, Bot, UserCheck } from 'lucide-react';
 import Avatar from 'react-avatar';
 import { supabase } from '../lib/supabase';
 import ApplicationCard from './ApplicationCard';
@@ -109,7 +109,7 @@ export default function ApplicationList({ viewMode }: ApplicationListProps) {
                   )}
                   {app.name}
                   <button className="text-slate-400 hover:text-white transition-colors">
-                    <ArrowUpRight size={14} />
+                    <Globe size={14} />
                   </button>
                 </h3>
                 <p className="text-xs text-slate-400 mb-1">{app.description}</p>
