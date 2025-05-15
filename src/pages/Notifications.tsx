@@ -311,8 +311,8 @@ export default function Notifications() {
                     <div className="mt-1">
                       {getNotificationIcon(notification.type)}
                     </div>
-                    <div 
-                      className="flex-1 min-w-0 cursor-pointer"
+                    <div
+                      className="flex-1 min-w-0 cursor-pointer relative"
                       onClick={() => setExpandedNotification(
                         expandedNotification === notification.id ? null : notification.id
                       )}
@@ -359,10 +359,10 @@ export default function Notifications() {
                         <p className="text-xs text-slate-500 mt-2">
                           {format(notification.timestamp, 'MMM d, h:mm a')}
                         </p>
+                        {!notification.read && (
+                          <div className="absolute right-0 top-[42px] h-2 w-2 rounded-full bg-blue-500" />
+                        )}
                     </div>
-                    {!notification.read && (
-                      <div className="h-2 w-2 rounded-full bg-blue-500 mt-[42px]" />
-                    )}
                   </div>
                 </div>
                 

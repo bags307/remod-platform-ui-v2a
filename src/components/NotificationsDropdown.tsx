@@ -200,7 +200,7 @@ function NotificationsDropdown({ isOpen, onClose }: NotificationsDropdownProps) 
                   <div className="mt-1">
                     {getNotificationIcon(notification.type)}
                   </div>
-                  <div className="flex-1 min-w-0">
+                  <div className="flex-1 min-w-0 relative">
                     <p className="text-sm font-medium text-white mb-1">{notification.title}</p>
                     <p className="text-sm text-slate-400 mb-2">{notification.description}</p>
                     <div className="flex items-center gap-2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -234,10 +234,10 @@ function NotificationsDropdown({ isOpen, onClose }: NotificationsDropdownProps) 
                     <p className="text-xs text-slate-500 mt-2">
                       {format(notification.timestamp, 'MMM d, h:mm a')}
                     </p>
+                    {!notification.read && (
+                      <div className="absolute right-0 top-[42px] h-2 w-2 rounded-full bg-blue-500" />
+                    )}
                   </div>
-                  {!notification.read && (
-                    <div className="h-2 w-2 rounded-full bg-blue-500 mt-[42px]" />
-                  )}
                   {notification.context && (
                     <div className="relative group/info">
                       <button 
