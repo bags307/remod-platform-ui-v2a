@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Bell, MessageSquare, AlertCircle, Server, CreditCard, Package, ArrowRight, Info, Star, Trash2, Bookmark } from 'lucide-react';
 import { format } from 'date-fns';
@@ -104,7 +104,7 @@ const SAMPLE_NOTIFICATIONS: Notification[] = [
     type: 'billing',
     title: 'Payment Processed',
     description: 'Your subscription payment was successful.',
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2), // 2 hours ago
+    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2),
     read: true
   },
   {
@@ -112,7 +112,7 @@ const SAMPLE_NOTIFICATIONS: Notification[] = [
     type: 'message',
     title: 'New Message',
     description: 'Sarah shared a new document with you.',
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 3), // 3 hours ago
+    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 3),
     read: true
   }
 ];
@@ -135,14 +135,15 @@ const getNotificationIcon = (type: Notification['type']) => {
 };
 
 function NotificationsDropdown({ isOpen, onClose }: NotificationsDropdownProps) {
-  if (!isOpen) return null;
-  
   const navigate = useNavigate();
-  const [hoveredNotification, setHoveredNotification] = React.useState<string | null>(null);
-  const [hoveredInfo, setHoveredInfo] = React.useState<string | null>(null);
-  const [notifications, setNotifications] = React.useState(SAMPLE_NOTIFICATIONS);
+  const [hoveredNotification, setHoveredNotification] = useState<string | null>(null);
+  const [hoveredInfo, setHoveredInfo] = useState<string | null>(null);
+  const [notifications, setNotifications] = useState(SAMPLE_NOTIFICATIONS);
 
-  const unreadCount = notifications.filter(n => !n.read).length;
+  const unreadCount = useMemo(() => 
+    notifications.filter(n => !n.read).length,
+    [notifications]
+  );
 
   const handleViewAll = useCallback(() => {
     onClose();
@@ -164,6 +165,8 @@ function NotificationsDropdown({ isOpen, onClose }: NotificationsDropdownProps) 
       return notification;
     }));
   }, []);
+
+  if (!isOpen) return null;
 
   return (
     <>
