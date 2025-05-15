@@ -173,8 +173,7 @@ export default function NotificationsDropdown({ isOpen, onClose }: Notifications
                             <span className="text-slate-300 font-medium">{value}</span>
                           </div>
                         ))}
-                        </div>
-                      ))}
+                      </div>
                     )}
                   </div>
                 </div>
