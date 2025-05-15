@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Bell } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import UserDropdown from './UserDropdown';
 import { useAuthStore } from '../stores';
 import Avatar from 'react-avatar';
 
@@ -13,6 +14,7 @@ interface UserProfile {
 export default function UserHeader() {
   const { user } = useAuthStore();
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     if (!user) return;
@@ -37,25 +39,35 @@ export default function UserHeader() {
       <div className="h-8 w-[1px] bg-slate-700/50" />
       <div className="flex items-center gap-3">
         <div className="text-right">
-          <p className="text-sm font-medium text-slate-200">
+          <p className="text-sm font-medium text-slate-200 cursor-pointer" onClick={() => setIsDropdownOpen(true)}>
             {profile.full_name || profile.email.split('@')[0]}
           </p>
           <p className="text-xs text-slate-400">{profile.email}</p>
         </div>
-        {profile.avatar_url ? (
-          <img 
-            src={profile.avatar_url}
-            alt="Profile"
-            className="h-8 w-8 rounded-full object-cover ring-2 ring-slate-700/50"
+        <div className="relative">
+          <button onClick={() => setIsDropdownOpen(true)}>
+            {profile.avatar_url ? (
+              <img 
+                src={profile.avatar_url}
+                alt="Profile"
+                className="h-8 w-8 rounded-full object-cover ring-2 ring-slate-700/50"
+              />
+            ) : (
+              <Avatar
+                name={profile.full_name || profile.email}
+                size="32"
+                round={true}
+                textSizeRatio={2}
+              />
+            )}
+          </button>
+          <UserDropdown
+            isOpen={isDropdownOpen}
+            onClose={() => setIsDropdownOpen(false)}
+            email={profile.email}
+            fullName={profile.full_name}
           />
-        ) : (
-          <Avatar
-            name={profile.full_name || profile.email}
-            size="32"
-            round={true}
-            textSizeRatio={2}
-          />
-        )}
+        </div>
       </div>
     </div>
   );
