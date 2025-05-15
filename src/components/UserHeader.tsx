@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Bell } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import UserDropdown from './UserDropdown';
@@ -17,6 +17,10 @@ export default function UserHeader() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+
+  const handleNotificationsClose = useCallback(() => {
+    setIsNotificationsOpen(false);
+  }, []);
 
   useEffect(() => {
     if (!user) return;
@@ -44,7 +48,7 @@ export default function UserHeader() {
         </button>
         <NotificationsDropdown
           isOpen={isNotificationsOpen}
-          onClose={() => setIsNotificationsOpen(false)}
+          onClose={handleNotificationsClose}
         />
       </div>
       <div className="h-8 w-[1px] bg-slate-700/50" />
