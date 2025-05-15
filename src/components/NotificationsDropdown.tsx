@@ -1,5 +1,5 @@
 import React from 'react';
-import { Bell, MessageSquare, AlertCircle, Server, CreditCard, Package, ArrowRight, Eye } from 'lucide-react';
+import { Bell, MessageSquare, AlertCircle, Server, CreditCard, Package, ArrowRight, ChevronDown } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface Notification {
@@ -123,52 +123,60 @@ export default function NotificationsDropdown({ isOpen, onClose }: Notifications
           {SAMPLE_NOTIFICATIONS.map((notification) => (
             <div 
               key={notification.id}
-              className={`p-4 hover:bg-slate-700/20 transition-colors relative group ${
+              className={`hover:bg-slate-700/20 transition-colors relative group ${
                 !notification.read ? 'bg-slate-700/10' : ''
               }`}
               onMouseEnter={() => setHoveredNotification(notification.id)}
               onMouseLeave={() => setHoveredNotification(null)}
             >
-              <div className="flex items-start gap-3">
-                <div className="mt-1">
-                  {getNotificationIcon(notification.type)}
+              <div className="p-4">
+                <div className="flex items-start gap-3">
+                  <div className="mt-1">
+                    {getNotificationIcon(notification.type)}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-white mb-1">{notification.title}</p>
+                    <p className="text-sm text-slate-400 mb-2">{notification.description}</p>
+                    <p className="text-xs text-slate-500">
+                      {format(notification.timestamp, 'MMM d, h:mm a')}
+                    </p>
+                  </div>
+                  {!notification.read && (
+                    <div className="h-2 w-2 rounded-full bg-blue-500 mt-2" />
+                  )}
+                  {notification.context && (
+                    <button 
+                      className="opacity-0 group-hover:opacity-100 transition-opacity h-8 w-8 rounded-full hover:bg-slate-600/50 flex items-center justify-center"
+                    >
+                      <ChevronDown 
+                        size={14} 
+                        className={`text-slate-400 transition-transform ${
+                          hoveredNotification === notification.id ? 'rotate-180' : ''
+                        }`}
+                      />
+                    </button>
+                  )}
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-white mb-1">{notification.title}</p>
-                  <p className="text-sm text-slate-400 mb-2">{notification.description}</p>
-                  <p className="text-xs text-slate-500">
-                    {format(notification.timestamp, 'MMM d, h:mm a')}
-                  </p>
-                </div>
-                {!notification.read && (
-                  <div className="h-2 w-2 rounded-full bg-blue-500 mt-2" />
-                )}
-                {notification.context && (
-                  <button 
-                    className="opacity-0 group-hover:opacity-100 transition-opacity absolute right-4 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full hover:bg-slate-600/50 flex items-center justify-center"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setHoveredNotification(hoveredNotification === notification.id ? null : notification.id);
-                    }}
-                  >
-                    <Eye size={14} className="text-slate-400" />
-                  </button>
-                )}
               </div>
               {hoveredNotification === notification.id && notification.context && (
-                <div className="absolute left-full top-0 ml-2 w-80 bg-slate-800 rounded-lg shadow-xl border border-slate-700/50 p-4 z-50">
-                  <h4 className="text-sm font-medium text-white mb-2">{notification.context.title}</h4>
-                  <p className="text-sm text-slate-400 mb-4">{notification.context.description}</p>
-                  {notification.context.metadata && (
-                    <div className="space-y-2">
-                      {Object.entries(notification.context.metadata).map(([key, value]) => (
-                        <div key={key} className="flex justify-between text-xs">
-                          <span className="text-slate-400">{key}</span>
-                          <span className="text-slate-300 font-medium">{value}</span>
+                <div 
+                  className="px-4 pb-4 -mt-2 relative before:absolute before:inset-x-4 before:top-0 before:h-4 before:bg-gradient-to-b before:from-slate-800/20 before:to-transparent"
+                >
+                  <div className="bg-slate-700/30 rounded-lg p-4 shadow-lg relative">
+                    <h4 className="text-sm font-medium text-white mb-2">{notification.context.title}</h4>
+                    <p className="text-sm text-slate-400 mb-4">{notification.context.description}</p>
+                    {notification.context.metadata && (
+                      <div className="space-y-2">
+                        {Object.entries(notification.context.metadata).map(([key, value]) => (
+                          <div key={key} className="flex justify-between text-xs">
+                            <span className="text-slate-400">{key}</span>
+                            <span className="text-slate-300 font-medium">{value}</span>
+                          </div>
+                        ))}
                         </div>
                       ))}
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               )}
             </div>
