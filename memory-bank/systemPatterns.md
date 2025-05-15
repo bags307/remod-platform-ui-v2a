@@ -33,6 +33,7 @@
    - Event-driven updates
    - Optimistic UI updates
    - Error boundary implementation
+  - TODO: Investigate and fix notification action buttons alignment with unread indicator
   - Real-time notification updates
   - Notification action handlers
 

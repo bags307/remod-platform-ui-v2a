@@ -7,6 +7,7 @@
    - Building responsive list/grid views
    - Creating reusable components
   - Implementing notifications system
+  - TODO: Fix notification action buttons alignment issue
 
 2. **Recent Changes**
   - Added notifications UI components
@@ -42,6 +43,7 @@
    - Reusable header and navigation
   - Expandable notification details with metadata
   - Real-time notification updates via WebSocket
+  - Known issue: Action buttons not properly aligned with unread indicator
 
 2. **State Management**
    - Separate stores for auth, UI, and flow state
