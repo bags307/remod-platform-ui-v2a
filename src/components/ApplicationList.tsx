@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { MoreVertical, ArrowUpRight, Users, Clock, Activity, Bot, UserCheck } from 'lucide-react';
 import Avatar from 'react-avatar';
 import { supabase } from '../lib/supabase';
+import ApplicationCard from './ApplicationCard';
 
 interface Application {
   id: string;
@@ -24,6 +25,7 @@ export default function ApplicationList() {
   const [applications, setApplications] = useState<Application[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { viewMode } = useUIStore();
 
   useEffect(() => {
     const fetchApplications = async () => {
@@ -85,7 +87,8 @@ export default function ApplicationList() {
           <p className="text-sm text-slate-400">No applications found</p>
         </div>
       ) : (
-        <div className="divide-y divide-slate-700/50">
+        viewMode === 'list' ? (
+          <div className="divide-y divide-slate-700/50">
           {applications.map((app) => (
           <div key={app.id} className="p-4 hover:bg-slate-700/20 transition-colors">
             <div className="flex items-center justify-between mb-3">
@@ -145,7 +148,14 @@ export default function ApplicationList() {
             </div>
           </div>
           ))}
-        </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 p-6">
+            {applications.map((app) => (
+              <ApplicationCard key={app.id} application={app} />
+            ))}
+          </div>
+        )
       )}
     </div>
   );
