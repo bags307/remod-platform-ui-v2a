@@ -1,5 +1,5 @@
 import React from 'react';
-import { Bell, MessageSquare, AlertCircle, Server, CreditCard, Package, ArrowRight, ChevronDown } from 'lucide-react';
+import { Bell, MessageSquare, AlertCircle, Server, CreditCard, Package, ArrowRight, Info } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface Notification {
@@ -144,25 +144,24 @@ export default function NotificationsDropdown({ isOpen, onClose }: Notifications
                   {!notification.read && (
                     <div className="h-2 w-2 rounded-full bg-blue-500 mt-2" />
                   )}
-                  {notification.context && (
-                    <button 
-                      className="opacity-0 group-hover:opacity-100 transition-opacity h-8 w-8 rounded-full hover:bg-slate-600/50 flex items-center justify-center"
-                    >
-                      <ChevronDown 
-                        size={14} 
-                        className={`text-slate-400 transition-transform ${
-                          hoveredNotification === notification.id ? 'rotate-180' : ''
-                        }`}
-                      />
-                    </button>
+                  {notification.context && hoveredNotification !== notification.id && (
+                    <div className="relative group/info">
+                      <button 
+                        className="opacity-0 group-hover:opacity-100 transition-opacity h-8 w-8 rounded-full hover:bg-slate-600/50 flex items-center justify-center"
+                        onMouseEnter={() => setHoveredNotification(notification.id)}
+                      >
+                        <Info size={14} className="text-slate-400" />
+                      </button>
+                    </div>
                   )}
                 </div>
               </div>
               {hoveredNotification === notification.id && notification.context && (
                 <div 
-                  className="px-4 pb-4 -mt-2 relative before:absolute before:inset-x-4 before:top-0 before:h-4 before:bg-gradient-to-b before:from-slate-800/20 before:to-transparent"
+                  className="px-4 pb-4 -mt-2 relative before:absolute before:inset-x-4 before:top-0 before:h-4 before:bg-gradient-to-b before:from-slate-800/20 before:to-transparent animate-expand-down origin-top"
+                  onMouseLeave={() => setHoveredNotification(null)}
                 >
-                  <div className="bg-slate-700/30 rounded-lg p-4 shadow-lg relative">
+                  <div className="bg-slate-700/30 rounded-lg p-4 shadow-lg relative border border-slate-600/30">
                     <h4 className="text-sm font-medium text-white mb-2">{notification.context.title}</h4>
                     <p className="text-sm text-slate-400 mb-4">{notification.context.description}</p>
                     {notification.context.metadata && (
