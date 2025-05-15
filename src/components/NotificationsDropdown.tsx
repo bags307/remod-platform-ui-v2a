@@ -144,10 +144,12 @@ export default function NotificationsDropdown({ isOpen, onClose }: Notifications
                   {!notification.read && (
                     <div className="h-2 w-2 rounded-full bg-blue-500 mt-2" />
                   )}
-                  {notification.context && hoveredNotification !== notification.id && (
+                  {notification.context && (
                     <div className="relative group/info">
                       <button 
-                        className="opacity-0 group-hover:opacity-100 transition-opacity h-8 w-8 rounded-full hover:bg-slate-600/50 flex items-center justify-center"
+                        className={`opacity-0 group-hover:animate-fade-in h-8 w-8 rounded-full hover:bg-slate-600/50 flex items-center justify-center ${
+                          hoveredNotification === notification.id ? 'opacity-100' : ''
+                        }`}
                         onMouseEnter={() => setHoveredNotification(notification.id)}
                       >
                         <Info size={14} className="text-slate-400" />
@@ -158,7 +160,7 @@ export default function NotificationsDropdown({ isOpen, onClose }: Notifications
               </div>
               {hoveredNotification === notification.id && notification.context && (
                 <div 
-                  className="px-4 pb-4 -mt-2 relative before:absolute before:inset-x-4 before:top-0 before:h-4 before:bg-gradient-to-b before:from-slate-800/20 before:to-transparent animate-expand-down origin-top"
+                  className="px-4 pb-4 -mt-2 relative before:absolute before:inset-x-4 before:top-0 before:h-4 before:bg-gradient-to-b before:from-slate-800/20 before:to-transparent animate-expand-down"
                   onMouseLeave={() => setHoveredNotification(null)}
                 >
                   <div className="bg-slate-700/30 rounded-lg p-4 shadow-lg relative border border-slate-600/30">

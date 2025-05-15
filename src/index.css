@@ -2,15 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 @keyframes expand-down {
   from {
     opacity: 0;
     transform: scaleY(0);
     transform-origin: top;
+    max-height: 0;
   }
   to {
     opacity: 1;
     transform: scaleY(1);
     transform-origin: top;
+    max-height: 500px;
   }
 }
