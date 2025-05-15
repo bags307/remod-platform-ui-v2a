@@ -1,5 +1,5 @@
 import React from 'react';
-import { Bell, MessageSquare, AlertCircle, Server, CreditCard, Package, ArrowRight } from 'lucide-react';
+import { Bell, MessageSquare, AlertCircle, Server, CreditCard, Package, ArrowRight, Eye } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface Notification {
@@ -7,6 +7,11 @@ interface Notification {
   type: 'system' | 'application' | 'user' | 'billing' | 'message';
   title: string;
   description: string;
+  context?: {
+    title: string;
+    description: string;
+    metadata?: Record<string, string>;
+  };
   timestamp: Date;
   read: boolean;
 }
@@ -22,6 +27,16 @@ const SAMPLE_NOTIFICATIONS: Notification[] = [
     type: 'system',
     title: 'System Maintenance',
     description: 'Scheduled maintenance will begin in 2 hours.',
+    context: {
+      title: 'System Maintenance Details',
+      description: 'Regular system maintenance to improve platform performance and stability. Expected downtime: 30 minutes.',
+      metadata: {
+        'Start Time': '2:00 AM UTC',
+        'Duration': '30 minutes',
+        'Impact': 'Minimal - Read-only mode',
+        'Services Affected': 'Database, API Gateway'
+      }
+    },
     timestamp: new Date(Date.now() - 1000 * 60 * 30), // 30 minutes ago
     read: false
   },
@@ -30,6 +45,16 @@ const SAMPLE_NOTIFICATIONS: Notification[] = [
     type: 'application',
     title: 'Deployment Complete',
     description: 'ChatBot v2.0 has been successfully deployed.',
+    context: {
+      title: 'Deployment Information',
+      description: 'New features include improved response accuracy, multilingual support, and enhanced memory management.',
+      metadata: {
+        'Version': 'v2.0.0',
+        'Environment': 'Production',
+        'Deployment ID': 'dep_abc123',
+        'Changes': '15 files modified'
+      }
+    },
     timestamp: new Date(Date.now() - 1000 * 60 * 60), // 1 hour ago
     read: false
   },
@@ -70,6 +95,8 @@ const getNotificationIcon = (type: Notification['type']) => {
 
 export default function NotificationsDropdown({ isOpen, onClose }: NotificationsDropdownProps) {
   if (!isOpen) return null;
+  
+  const [hoveredNotification, setHoveredNotification] = React.useState<string | null>(null);
 
   const unreadCount = SAMPLE_NOTIFICATIONS.filter(n => !n.read).length;
 
@@ -96,9 +123,11 @@ export default function NotificationsDropdown({ isOpen, onClose }: Notifications
           {SAMPLE_NOTIFICATIONS.map((notification) => (
             <div 
               key={notification.id}
-              className={`p-4 hover:bg-slate-700/20 transition-colors ${
+              className={`p-4 hover:bg-slate-700/20 transition-colors relative group ${
                 !notification.read ? 'bg-slate-700/10' : ''
               }`}
+              onMouseEnter={() => setHoveredNotification(notification.id)}
+              onMouseLeave={() => setHoveredNotification(null)}
             >
               <div className="flex items-start gap-3">
                 <div className="mt-1">
@@ -114,7 +143,34 @@ export default function NotificationsDropdown({ isOpen, onClose }: Notifications
                 {!notification.read && (
                   <div className="h-2 w-2 rounded-full bg-blue-500 mt-2" />
                 )}
+                {notification.context && (
+                  <button 
+                    className="opacity-0 group-hover:opacity-100 transition-opacity absolute right-4 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full hover:bg-slate-600/50 flex items-center justify-center"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setHoveredNotification(hoveredNotification === notification.id ? null : notification.id);
+                    }}
+                  >
+                    <Eye size={14} className="text-slate-400" />
+                  </button>
+                )}
               </div>
+              {hoveredNotification === notification.id && notification.context && (
+                <div className="absolute left-full top-0 ml-2 w-80 bg-slate-800 rounded-lg shadow-xl border border-slate-700/50 p-4 z-50">
+                  <h4 className="text-sm font-medium text-white mb-2">{notification.context.title}</h4>
+                  <p className="text-sm text-slate-400 mb-4">{notification.context.description}</p>
+                  {notification.context.metadata && (
+                    <div className="space-y-2">
+                      {Object.entries(notification.context.metadata).map(([key, value]) => (
+                        <div key={key} className="flex justify-between text-xs">
+                          <span className="text-slate-400">{key}</span>
+                          <span className="text-slate-300 font-medium">{value}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           ))}
         </div>
