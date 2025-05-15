@@ -21,9 +21,14 @@ interface Application {
   type: string;
 }
 
+interface ApplicationListProps {
+  viewMode: 'list' | 'grid';
+}
+
 export default function ApplicationList({ viewMode }: ApplicationListProps) {
   const [applications, setApplications] = useState<Application[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchApplications = async () => {
