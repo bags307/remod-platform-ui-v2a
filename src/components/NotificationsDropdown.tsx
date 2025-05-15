@@ -97,6 +97,7 @@ export default function NotificationsDropdown({ isOpen, onClose }: Notifications
   if (!isOpen) return null;
   
   const [hoveredNotification, setHoveredNotification] = React.useState<string | null>(null);
+  const [hoveredInfo, setHoveredInfo] = React.useState<string | null>(null);
 
   const unreadCount = SAMPLE_NOTIFICATIONS.filter(n => !n.read).length;
 
@@ -126,8 +127,6 @@ export default function NotificationsDropdown({ isOpen, onClose }: Notifications
               className={`hover:bg-slate-700/20 transition-colors relative group ${
                 !notification.read ? 'bg-slate-700/10' : ''
               }`}
-              onMouseEnter={() => setHoveredNotification(notification.id)}
-              onMouseLeave={() => setHoveredNotification(null)}
             >
               <div className="p-4">
                 <div className="flex items-start gap-3">
@@ -147,10 +146,9 @@ export default function NotificationsDropdown({ isOpen, onClose }: Notifications
                   {notification.context && (
                     <div className="relative group/info">
                       <button 
-                        className={`opacity-0 group-hover:animate-fade-in h-8 w-8 rounded-full hover:bg-slate-600/50 flex items-center justify-center ${
-                          hoveredNotification === notification.id ? 'opacity-100' : ''
-                        }`}
-                        onMouseEnter={() => setHoveredNotification(notification.id)}
+                        className="opacity-0 group-hover:animate-fade-in h-8 w-8 rounded-full hover:bg-slate-600/50 flex items-center justify-center"
+                        onMouseEnter={() => setHoveredInfo(notification.id)}
+                        onMouseLeave={() => setHoveredInfo(null)}
                       >
                         <Info size={14} className="text-slate-400" />
                       </button>
@@ -158,10 +156,9 @@ export default function NotificationsDropdown({ isOpen, onClose }: Notifications
                   )}
                 </div>
               </div>
-              {hoveredNotification === notification.id && notification.context && (
+              {hoveredInfo === notification.id && notification.context && (
                 <div 
                   className="px-4 pb-4 -mt-2 relative before:absolute before:inset-x-4 before:top-0 before:h-4 before:bg-gradient-to-b before:from-slate-800/20 before:to-transparent animate-expand-down"
-                  onMouseLeave={() => setHoveredNotification(null)}
                 >
                   <div className="bg-slate-700/30 rounded-lg p-4 shadow-lg relative border border-slate-600/30">
                     <h4 className="text-sm font-medium text-white mb-2">{notification.context.title}</h4>
