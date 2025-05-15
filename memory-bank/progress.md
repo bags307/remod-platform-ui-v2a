@@ -8,6 +8,7 @@
    - Supabase authentication
    - View mode management
    - User dropdown menu
+  - Notifications UI components
 
 2. **UI Components**
    - Login page
@@ -18,14 +19,17 @@
    - Application cards
    - User header with avatar
    - User dropdown with actions
+  - Notifications dropdown with actions
+  - Notifications page with filtering
+  - Expandable notification details
 
 ## In Progress
 1. **Notifications System**
-   - Notifications dropdown UI
-   - Multiple notification types support
-   - Notifications timeline page
-   - Read/unread status
-   - Notification preferences
+  - Database schema implementation
+  - API endpoint development
+  - WebSocket integration
+  - Notification preferences UI
+  - Real-time updates
 
 1. **Application Management**
    - Basic CRUD operations

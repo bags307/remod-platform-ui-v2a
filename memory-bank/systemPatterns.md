@@ -26,12 +26,15 @@
    - Local component state for route-specific UI preferences
    - Global state only for app-wide settings
    - Clear separation between global and local state
+  - Real-time notification state via WebSocket
 
 3. **Data Flow Patterns**
    - Unidirectional data flow
    - Event-driven updates
    - Optimistic UI updates
    - Error boundary implementation
+  - Real-time notification updates
+  - Notification action handlers
 
 ## Implementation Paths
 1. **Authentication Flow**
@@ -39,12 +42,17 @@
    Login -> PKCE Flow -> Session Management -> Protected Routes
    ```
 
-2. **Agent Configuration**
+2. **Notification Flow**
+  ```
+  WebSocket -> Store Update -> UI Update -> User Action -> API Call -> Store Update
+  ```
+
+3. **Agent Configuration**
    ```
    Agent Setup -> Memory Config -> Integration Setup -> Deployment
    ```
 
-3. **Organization Management**
+4. **Organization Management**
    ```
    Create Org -> Configure Resources -> Add Users -> Set Permissions
    ```

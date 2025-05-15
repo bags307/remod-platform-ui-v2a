@@ -6,9 +6,13 @@
    - Implementing application management
    - Building responsive list/grid views
    - Creating reusable components
-   - Adding notifications system UI
+  - Implementing notifications system
 
 2. **Recent Changes**
+  - Added notifications UI components
+  - Created notifications page with filtering
+  - Added notification actions (star, save, dismiss)
+  - Added expandable notification details
    - Added Applications dashboard
    - Created ApplicationList component with dual view modes
    - Implemented ApplicationCard component
@@ -17,11 +21,12 @@
    - Added UserDropdown component
 
 3. **Next Steps**
-   - Implement notifications system
-     - Create NotificationsDropdown component
-     - Add notifications timeline page
-     - Support multiple notification types
-     - Add notification preferences
+  - Complete notifications system backend:
+    - Create database schema and migrations
+    - Implement notification API endpoints
+    - Add WebSocket subscriptions
+    - Integrate with Supabase
+    - Add notification preferences UI
    - Add application CRUD operations
    - Add application filtering
    - Add application deployment flow
@@ -35,17 +40,21 @@
    - Dual view modes (list/grid) for applications
    - Consistent component patterns
    - Reusable header and navigation
+  - Expandable notification details with metadata
+  - Real-time notification updates via WebSocket
 
 2. **State Management**
    - Separate stores for auth, UI, and flow state
    - Route-specific preferences managed with local state
    - Global UI store simplified to core app-wide settings
    - View mode preferences isolated to route components
+  - Notification state managed through Supabase
 
 3. **Integration Strategy**
    - Direct database connections during development
    - API gateway routing for production
    - Secure credential management
+  - WebSocket for real-time notifications
 
 ## Current Patterns
 1. **Component Organization**
