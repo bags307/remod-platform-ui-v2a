@@ -4,6 +4,7 @@ import { MoreVertical, ArrowUpRight, Users, Clock, Activity, Bot, UserCheck } fr
 import Avatar from 'react-avatar';
 import { supabase } from '../lib/supabase';
 import ApplicationCard from './ApplicationCard';
+import { useUIStore } from '../stores';
 
 interface Application {
   id: string;
