@@ -316,14 +316,10 @@ export default function Notifications() {
                       onClick={() => setExpandedNotification(
                         expandedNotification === notification.id ? null : notification.id
                       )}
-                    >
+                    > 
                       <p className="text-sm font-medium text-white mb-1">{notification.title}</p>
                       <p className="text-sm text-slate-400 mb-2">{notification.description}</p>
-                      <div className="flex items-center justify-between">
-                        <p className="text-xs text-slate-500">
-                          {format(notification.timestamp, 'MMM d, h:mm a')}
-                        </p>
-                        <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2">
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
@@ -360,10 +356,12 @@ export default function Notifications() {
                             <Trash2 size={14} />
                           </button>
                         </div>
-                      </div>
+                        <p className="text-xs text-slate-500 mt-2">
+                          {format(notification.timestamp, 'MMM d, h:mm a')}
+                        </p>
                     </div>
                     {!notification.read && (
-                      <div className="h-2 w-2 rounded-full bg-blue-500 mt-2" />
+                      <div className="h-2 w-2 rounded-full bg-blue-500 mt-[42px]" />
                     )}
                   </div>
                 </div>
