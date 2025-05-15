@@ -23,8 +23,9 @@
 2. **State Management**
    - Store slices by feature
    - Action creators for complex operations
-   - Computed values with selectors
-   - Persistent storage integration
+   - Local component state for route-specific UI preferences
+   - Global state only for app-wide settings
+   - Clear separation between global and local state
 
 3. **Data Flow Patterns**
    - Unidirectional data flow
@@ -74,6 +75,10 @@
      - TypeScript support
      - Minimal boilerplate
      - Good performance
+   - State Scope Guidelines:
+     - Global state: Authentication, theme, sidebar
+     - Local state: Route-specific preferences, temporary UI state
+     - Component state: Internal component behavior
 
 2. **Styling Solution**
    - Why Tailwind:

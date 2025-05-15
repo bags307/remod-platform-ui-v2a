@@ -4,11 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import ApplicationList from '../components/ApplicationList';
 import UserHeader from '../components/UserHeader';
-import { useUIStore } from '../stores';
 
 export default function Applications() {
   const navigate = useNavigate();
-  const { viewMode, setViewMode } = useUIStore();
+  const [viewMode, setViewMode] = React.useState<'grid' | 'list'>('list');
   const [selectedPeriod, setSelectedPeriod] = React.useState<'24h' | '7d' | '30d'>('7d');
   
   const handleSignOut = async (e: React.MouseEvent) => {
@@ -244,7 +243,7 @@ export default function Applications() {
         </div>
 
         <div className="space-y-6">
-          <ApplicationList />
+          <ApplicationList viewMode={viewMode} />
         </div>
       </main>
       </div>

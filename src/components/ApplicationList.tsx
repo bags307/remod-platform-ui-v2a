@@ -4,7 +4,6 @@ import { MoreVertical, ArrowUpRight, Users, Clock, Activity, Bot, UserCheck } fr
 import Avatar from 'react-avatar';
 import { supabase } from '../lib/supabase';
 import ApplicationCard from './ApplicationCard';
-import { useUIStore } from '../stores/uiStore';
 
 interface Application {
   id: string;
@@ -22,11 +21,9 @@ interface Application {
   type: string;
 }
 
-export default function ApplicationList() {
+export default function ApplicationList({ viewMode }: ApplicationListProps) {
   const [applications, setApplications] = useState<Application[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const { viewMode } = useUIStore();
 
   useEffect(() => {
     const fetchApplications = async () => {

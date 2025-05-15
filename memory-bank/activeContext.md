@@ -16,9 +16,8 @@
 
 3. **Next Steps**
    - Add application CRUD operations
-   - Implement application filtering
+   - Add application filtering
    - Add application deployment flow
-   - Add application analytics
 
    - Integrate Neo4j connection management
    - Add Pinecone vector store configuration
@@ -32,8 +31,9 @@
 
 2. **State Management**
    - Separate stores for auth, UI, and flow state
-   - Local component state for isolated UI interactions
-   - View mode preferences in UI store
+   - Route-specific preferences managed with local state
+   - Global UI store simplified to core app-wide settings
+   - View mode preferences isolated to route components
 
 3. **Integration Strategy**
    - Direct database connections during development
