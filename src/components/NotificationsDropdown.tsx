@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Bell, MessageSquare, AlertCircle, Server, CreditCard, Package, ArrowRight, Info } from 'lucide-react';
 import { format } from 'date-fns';
 
@@ -96,6 +97,7 @@ const getNotificationIcon = (type: Notification['type']) => {
 export default function NotificationsDropdown({ isOpen, onClose }: NotificationsDropdownProps) {
   if (!isOpen) return null;
   
+  const navigate = useNavigate();
   const [hoveredNotification, setHoveredNotification] = React.useState<string | null>(null);
   const [hoveredInfo, setHoveredInfo] = React.useState<string | null>(null);
 
@@ -182,7 +184,13 @@ export default function NotificationsDropdown({ isOpen, onClose }: Notifications
         </div>
 
         <div className="p-3 border-t border-slate-700/50">
-          <button className="w-full text-sm text-slate-300 hover:text-white py-2 rounded-lg hover:bg-slate-700/50 transition-colors flex items-center justify-center gap-2">
+          <button 
+            onClick={() => {
+              onClose();
+              navigate('/notifications');
+            }}
+            className="w-full text-sm text-slate-300 hover:text-white py-2 rounded-lg hover:bg-slate-700/50 transition-colors flex items-center justify-center gap-2"
+          >
             View All Notifications
             <ArrowRight size={14} />
           </button>
