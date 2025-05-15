@@ -6,18 +6,24 @@
    - Tailwind CSS integration
    - Basic routing structure
    - Supabase authentication
+   - View mode management
 
 2. **UI Components**
    - Login page
    - Dashboard layout
    - Navigation sidebar
    - Header with user menu
+   - Application list/grid views
+   - Application cards
+   - User header with avatar
 
 ## In Progress
 1. **Application Management**
    - Basic CRUD operations
-   - Application listing
+   - Application listing with dual views
    - Configuration interface
+   - Application filtering
+   - Import/export functionality
 
 2. **Organization Management**
    - Organization creation flow
