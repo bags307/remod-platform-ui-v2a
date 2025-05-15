@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Bell, MessageSquare, AlertCircle, Server, CreditCard, Package, ArrowRight, Info } from 'lucide-react';
+import { Bell, MessageSquare, AlertCircle, Server, CreditCard, Package, ArrowRight, Info, Star, Trash2, Bookmark } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface Notification {
@@ -15,6 +15,8 @@ interface Notification {
   };
   timestamp: Date;
   read: boolean;
+  starred?: boolean;
+  saved?: boolean;
 }
 
 interface NotificationsDropdownProps {
@@ -38,8 +40,10 @@ const SAMPLE_NOTIFICATIONS: Notification[] = [
         'Services Affected': 'Database, API Gateway'
       }
     },
-    timestamp: new Date(Date.now() - 1000 * 60 * 30), // 30 minutes ago
-    read: false
+    timestamp: new Date(Date.now() - 1000 * 60 * 30),
+    read: false,
+    starred: true,
+    saved: false
   },
   {
     id: '2',
@@ -56,8 +60,10 @@ const SAMPLE_NOTIFICATIONS: Notification[] = [
         'Changes': '15 files modified'
       }
     },
-    timestamp: new Date(Date.now() - 1000 * 60 * 60), // 1 hour ago
-    read: false
+    timestamp: new Date(Date.now() - 1000 * 60 * 60),
+    read: false,
+    starred: false,
+    saved: true
   },
   {
     id: '3',
@@ -100,13 +106,30 @@ function NotificationsDropdown({ isOpen, onClose }: NotificationsDropdownProps) 
   const navigate = useNavigate();
   const [hoveredNotification, setHoveredNotification] = React.useState<string | null>(null);
   const [hoveredInfo, setHoveredInfo] = React.useState<string | null>(null);
+  const [notifications, setNotifications] = React.useState(SAMPLE_NOTIFICATIONS);
 
-  const unreadCount = SAMPLE_NOTIFICATIONS.filter(n => !n.read).length;
+  const unreadCount = notifications.filter(n => !n.read).length;
 
   const handleViewAll = useCallback(() => {
     onClose();
     navigate('/notifications');
   }, [onClose, navigate]);
+
+  const handleAction = useCallback((id: string, action: 'star' | 'save' | 'dismiss') => {
+    setNotifications(prev => prev.map(notification => {
+      if (notification.id === id) {
+        switch (action) {
+          case 'star':
+            return { ...notification, starred: !notification.starred };
+          case 'save':
+            return { ...notification, saved: !notification.saved };
+          case 'dismiss':
+            return { ...notification, read: true };
+        }
+      }
+      return notification;
+    }));
+  }, []);
 
   return (
     <>
@@ -128,7 +151,7 @@ function NotificationsDropdown({ isOpen, onClose }: NotificationsDropdownProps) 
         </div>
 
         <div className="divide-y divide-slate-700/50">
-          {SAMPLE_NOTIFICATIONS.map((notification) => (
+          {notifications.map((notification) => (
             <div 
               key={notification.id}
               className={`hover:bg-slate-700/20 transition-colors relative group ${
@@ -146,6 +169,34 @@ function NotificationsDropdown({ isOpen, onClose }: NotificationsDropdownProps) 
                     <p className="text-xs text-slate-500">
                       {format(notification.timestamp, 'MMM d, h:mm a')}
                     </p>
+                    <div className="flex items-center gap-2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button
+                        onClick={() => handleAction(notification.id, 'star')}
+                        className={`h-7 w-7 rounded-md flex items-center justify-center ${
+                          notification.starred 
+                            ? 'text-amber-400 bg-amber-500/10' 
+                            : 'text-slate-400 hover:text-amber-400 hover:bg-slate-600/50'
+                        }`}
+                      >
+                        <Star size={14} className={notification.starred ? 'fill-current' : ''} />
+                      </button>
+                      <button
+                        onClick={() => handleAction(notification.id, 'save')}
+                        className={`h-7 w-7 rounded-md flex items-center justify-center ${
+                          notification.saved
+                            ? 'text-blue-400 bg-blue-500/10'
+                            : 'text-slate-400 hover:text-blue-400 hover:bg-slate-600/50'
+                        }`}
+                      >
+                        <Bookmark size={14} className={notification.saved ? 'fill-current' : ''} />
+                      </button>
+                      <button
+                        onClick={() => handleAction(notification.id, 'dismiss')}
+                        className="h-7 w-7 rounded-md flex items-center justify-center text-slate-400 hover:text-rose-400 hover:bg-slate-600/50"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
                   </div>
                   {!notification.read && (
                     <div className="h-2 w-2 rounded-full bg-blue-500 mt-2" />
