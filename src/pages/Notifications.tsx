@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Bell, MessageSquare, AlertCircle, Server, CreditCard, Package, LayoutDashboard, Building2, Bot, Users, BarChart3, Settings, LogOut, Filter, Search } from 'lucide-react';
+import { Bell, MessageSquare, AlertCircle, Server, CreditCard, Package, LayoutDashboard, Building2, Bot, Users, BarChart3, Settings, LogOut, Filter, Search, Star, Bookmark, Trash2 } from 'lucide-react';
 import { format } from 'date-fns';
 import UserHeader from '../components/UserHeader';
 import { supabase } from '../lib/supabase';
@@ -55,6 +55,8 @@ interface Notification {
   };
   timestamp: Date;
   read: boolean;
+  starred?: boolean;
+  saved?: boolean;
 }
 
 /**
@@ -98,7 +100,9 @@ const NOTIFICATIONS: Notification[] = [
       }
     },
     timestamp: new Date(Date.now() - 1000 * 60 * 30),
-    read: false
+    read: false,
+    starred: true,
+    saved: false
   },
   {
     id: '2',
@@ -116,7 +120,9 @@ const NOTIFICATIONS: Notification[] = [
       }
     },
     timestamp: new Date(Date.now() - 1000 * 60 * 60),
-    read: false
+    read: false,
+    starred: false,
+    saved: true
   },
   {
     id: '3',
@@ -157,6 +163,23 @@ export default function Notifications() {
   const navigate = useNavigate();
   const [expandedNotification, setExpandedNotification] = React.useState<string | null>(null);
   const [selectedType, setSelectedType] = React.useState<string>('all');
+  const [notifications, setNotifications] = React.useState(NOTIFICATIONS);
+
+  const handleAction = React.useCallback((id: string, action: 'star' | 'save' | 'dismiss') => {
+    setNotifications(prev => prev.map(notification => {
+      if (notification.id === id) {
+        switch (action) {
+          case 'star':
+            return { ...notification, starred: !notification.starred };
+          case 'save':
+            return { ...notification, saved: !notification.saved };
+          case 'dismiss':
+            return { ...notification, read: true };
+        }
+      }
+      return notification;
+    }));
+  }, []);
 
   const handleSignOut = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -169,8 +192,8 @@ export default function Notifications() {
   };
 
   const filteredNotifications = selectedType === 'all' 
-    ? NOTIFICATIONS 
-    : NOTIFICATIONS.filter(n => n.type === selectedType);
+    ? notifications 
+    : notifications.filter(n => n.type === selectedType);
 
   return (
     <div className="min-h-screen bg-slate-900 flex">
@@ -296,9 +319,48 @@ export default function Notifications() {
                     >
                       <p className="text-sm font-medium text-white mb-1">{notification.title}</p>
                       <p className="text-sm text-slate-400 mb-2">{notification.description}</p>
-                      <p className="text-xs text-slate-500">
-                        {format(notification.timestamp, 'MMM d, h:mm a')}
-                      </p>
+                      <div className="flex items-center justify-between">
+                        <p className="text-xs text-slate-500">
+                          {format(notification.timestamp, 'MMM d, h:mm a')}
+                        </p>
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleAction(notification.id, 'star');
+                            }}
+                            className={`h-7 w-7 rounded-md flex items-center justify-center ${
+                              notification.starred 
+                                ? 'text-amber-400 bg-amber-500/10' 
+                                : 'text-slate-400 hover:text-amber-400 hover:bg-slate-600/50'
+                            }`}
+                          >
+                            <Star size={14} className={notification.starred ? 'fill-current' : ''} />
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleAction(notification.id, 'save');
+                            }}
+                            className={`h-7 w-7 rounded-md flex items-center justify-center ${
+                              notification.saved
+                                ? 'text-blue-400 bg-blue-500/10'
+                                : 'text-slate-400 hover:text-blue-400 hover:bg-slate-600/50'
+                            }`}
+                          >
+                            <Bookmark size={14} className={notification.saved ? 'fill-current' : ''} />
+                          </button>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleAction(notification.id, 'dismiss');
+                            }}
+                            className="h-7 w-7 rounded-md flex items-center justify-center text-slate-400 hover:text-rose-400 hover:bg-slate-600/50"
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
+                      </div>
                     </div>
                     {!notification.read && (
                       <div className="h-2 w-2 rounded-full bg-blue-500 mt-2" />
