@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Bell } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import UserDropdown from './UserDropdown';
+import NotificationsDropdown from './NotificationsDropdown';
 import { useAuthStore } from '../stores';
 import Avatar from 'react-avatar';
 
@@ -15,6 +16,7 @@ export default function UserHeader() {
   const { user } = useAuthStore();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
 
   useEffect(() => {
     if (!user) return;
@@ -32,10 +34,19 @@ export default function UserHeader() {
 
   return (
     <div className="flex items-center gap-4">
-      <button className="h-8 w-8 flex items-center justify-center rounded-lg hover:bg-slate-800 relative">
-        <Bell size={18} className="text-slate-400" />
-        <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-blue-500" />
-      </button>
+      <div className="relative">
+        <button 
+          onClick={() => setIsNotificationsOpen(true)}
+          className="h-8 w-8 flex items-center justify-center rounded-lg hover:bg-slate-800 relative"
+        >
+          <Bell size={18} className="text-slate-400" />
+          <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-blue-500" />
+        </button>
+        <NotificationsDropdown
+          isOpen={isNotificationsOpen}
+          onClose={() => setIsNotificationsOpen(false)}
+        />
+      </div>
       <div className="h-8 w-[1px] bg-slate-700/50" />
       <div className="flex items-center gap-3">
         <div className="text-right">

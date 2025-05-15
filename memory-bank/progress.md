@@ -7,6 +7,7 @@
    - Basic routing structure
    - Supabase authentication
    - View mode management
+   - User dropdown menu
 
 2. **UI Components**
    - Login page
@@ -16,8 +17,16 @@
    - Application list/grid views
    - Application cards
    - User header with avatar
+   - User dropdown with actions
 
 ## In Progress
+1. **Notifications System**
+   - Notifications dropdown UI
+   - Multiple notification types support
+   - Notifications timeline page
+   - Read/unread status
+   - Notification preferences
+
 1. **Application Management**
    - Basic CRUD operations
    - Application listing with dual views

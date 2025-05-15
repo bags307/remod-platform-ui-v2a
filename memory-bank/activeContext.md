@@ -6,6 +6,7 @@
    - Implementing application management
    - Building responsive list/grid views
    - Creating reusable components
+   - Adding notifications system UI
 
 2. **Recent Changes**
    - Added Applications dashboard
@@ -13,8 +14,14 @@
    - Implemented ApplicationCard component
    - Added UserHeader component
    - Extended UI store for view mode management
+   - Added UserDropdown component
 
 3. **Next Steps**
+   - Implement notifications system
+     - Create NotificationsDropdown component
+     - Add notifications timeline page
+     - Support multiple notification types
+     - Add notification preferences
    - Add application CRUD operations
    - Add application filtering
    - Add application deployment flow
