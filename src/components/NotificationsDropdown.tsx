@@ -3,6 +3,40 @@ import { useNavigate } from 'react-router-dom';
 import { Bell, MessageSquare, AlertCircle, Server, CreditCard, Package, ArrowRight, Info, Star, Trash2, Bookmark } from 'lucide-react';
 import { format } from 'date-fns';
 
+/**
+ * Database Queries Required:
+ * 
+ * 1. Fetch Recent Notifications:
+ *    ```sql
+ *    SELECT *
+ *    FROM notifications
+ *    WHERE user_id = auth.uid()
+ *    ORDER BY created_at DESC
+ *    LIMIT 10
+ *    ```
+ * 
+ * 2. Update Notification Status:
+ *    ```sql
+ *    UPDATE notifications
+ *    SET read = true, updated_at = now()
+ *    WHERE id = $1 AND user_id = auth.uid()
+ *    ```
+ * 
+ * 3. Star/Unstar Notification:
+ *    ```sql
+ *    UPDATE notifications
+ *    SET starred = NOT starred, updated_at = now()
+ *    WHERE id = $1 AND user_id = auth.uid()
+ *    ```
+ * 
+ * 4. Save/Unsave Notification:
+ *    ```sql
+ *    UPDATE notifications
+ *    SET saved = NOT saved, updated_at = now()
+ *    WHERE id = $1 AND user_id = auth.uid()
+ *    ```
+ */
+
 interface Notification {
   id: string;
   type: 'system' | 'application' | 'user' | 'billing' | 'message';

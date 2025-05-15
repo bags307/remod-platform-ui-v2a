@@ -5,6 +5,44 @@ import { format } from 'date-fns';
 import UserHeader from '../components/UserHeader';
 import { supabase } from '../lib/supabase';
 
+/**
+ * Database Schema Requirements:
+ * 
+ * Table: notifications
+ * - id: uuid PRIMARY KEY DEFAULT gen_random_uuid()
+ * - user_id: uuid REFERENCES auth.users(id)
+ * - type: text NOT NULL CHECK (type IN ('system', 'application', 'user', 'billing', 'message'))
+ * - title: text NOT NULL
+ * - description: text NOT NULL
+ * - context: jsonb -- For extended notification data
+ * - read: boolean DEFAULT false
+ * - starred: boolean DEFAULT false
+ * - saved: boolean DEFAULT false
+ * - created_at: timestamptz DEFAULT now()
+ * - updated_at: timestamptz DEFAULT now()
+ * 
+ * Indexes:
+ * - (user_id, created_at DESC) -- For efficient user notification retrieval
+ * - (user_id, type) -- For filtering by type
+ * - (user_id, read) -- For unread counts
+ * 
+ * RLS Policies:
+ * - Users can only view their own notifications
+ * - System role can create notifications for any user
+ * - Users can update read/starred/saved status of their own notifications
+ * 
+ * API Endpoints Needed:
+ * - GET /api/notifications - List notifications with filtering/pagination
+ * - POST /api/notifications/mark-read - Mark notifications as read
+ * - POST /api/notifications/star - Star/unstar notifications
+ * - POST /api/notifications/save - Save/unsave notifications
+ * - DELETE /api/notifications - Delete notifications
+ * 
+ * WebSocket Subscriptions:
+ * - Real-time notification delivery
+ * - Status updates (read/unread, starred, saved)
+ */
+
 interface Notification {
   id: string;
   type: 'system' | 'application' | 'user' | 'billing' | 'message';
@@ -18,6 +56,30 @@ interface Notification {
   timestamp: Date;
   read: boolean;
 }
+
+/**
+ * Implementation Notes:
+ * 
+ * 1. Database Integration:
+ *    - Use Supabase real-time subscriptions for instant updates
+ *    - Implement optimistic updates for better UX
+ *    - Cache notifications locally for offline access
+ * 
+ * 2. State Management:
+ *    - Track notification states (read/unread, starred, saved)
+ *    - Maintain notification preferences per user
+ *    - Handle pagination and infinite scroll
+ * 
+ * 3. Performance Considerations:
+ *    - Implement virtual scrolling for large notification lists
+ *    - Batch update operations (mark multiple as read)
+ *    - Debounce search and filter operations
+ * 
+ * 4. Security:
+ *    - Enforce RLS policies at database level
+ *    - Validate notification types and content
+ *    - Rate limit notification creation
+ */
 
 const NOTIFICATIONS: Notification[] = [
   {
